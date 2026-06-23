@@ -1,126 +1,111 @@
-[Google Jobs Scraper](https://apify.com/bluelightco/google-jobs-scraper?fpr=data)
+[Google Jobs Scraper](https://apify.com/thirdwatch/google-jobs-scraper?fpr=data)
 
-**Google Jobs Scraper** is a powerful Apify actor designed to extract structured job posting data directly from Google Jobs. Whether you're a job seeker, market researcher, or developer, this actor allows you to efficiently search and collect listings based on role, location, and posting date.
+# Google Jobs Scraper
 
----
+> Scrape Google Jobs (Google for Jobs) aggregated listings — one search covers Indeed, LinkedIn, Glassdoor, ZipRecruiter, and dozens more.
 
-## 🔍 Main Features
+## What you get
 
-- **Smart Search Input:** Search for any job title or keyword using Google's native job search engine.
-- **Location Targeting:** Filter results by specific cities, states, or countries.
-- **Date Range Control:** Set the number of days to look back for recent job postings.
-- **Result Limiting:** Specify how many job posts you want per search.
-- **Rich Output:** Includes company name, title, job description, salary, schedule, work model, and source URLs.
+Google Jobs aggregates listings from 20+ job boards into a single search. This actor returns job titles, hiring companies, locations, salary ranges, full descriptions, employment types, original source boards, direct apply URLs, and posting dates — all from one query. Works for any country and any role.
 
----
+## Output fields
 
-## 🧾 Input Parameters
+| Field | Description |
+| --- | --- |
+| `title` | Job title |
+| `company_name` | Hiring company |
+| `location` | Job location |
+| `salary` | Salary range (when available) |
+| `description` | Full job description |
+| `job_type` | Employment type (full-time, part-time, contract, etc.) |
+| `source` | Original job board (Indeed, LinkedIn, Glassdoor, etc.) |
+| `apply_url` | Direct apply URL |
+| `posted_date` | Posting date |
 
-Configure the following input fields to customize your job search:
-
-- **`query_input`** *(string)*:
-
-The job title or keywords you want to search for (e.g., "Software Developer", "Marketing Manager").
-
-**Default:** `"Software Developer"`
-- **`location`** *(string)*:
-
-The location to filter job results by. This can be a city, state, country, or use `"Remote"` to find remote jobs.
-
-**Default:** `"United States"`
-- **`days_to_search`** *(integer)*:
-
-How many days back from today to look for job postings. Set to `7` to get jobs from the past week.
-
-**Default:** `7`
-- **`result_limit`** *(integer)*:
-
-The maximum number of job listings to retrieve. Use this to control the amount of data returned.
-
-**Default:** `10`
-
----
-
-## 🚀 How to Use
-
-1. **Configure Input:**
-
-- Enter a job search term in `query_input` (e.g., "Data Scientist").
-- Specify a `location` like "New York" or "Remote".
-- Adjust `days_to_search` to control the recency of results.
-- Optionally, set a `result_limit` for pagination control.
-2. **Run the Actor:**
-
-- Run it via the Apify console or API.
-3. **Get the Data:**
-
-- Output will be in structured JSON. You can export to CSV or integrate with other workflows.
-
----
-
-## 📦 Output Example
-
-**Example Output:**
+## Example output
 
 ```
 {
-  "title": "Software Developer (IC2) (Python)",
-  "company_name": "Classlink",
-  "location": "Anywhere",
-  "google_url": "https://www.google.com/search?...",
-  "details": [
-    "2 days ago",
-    "85K–100K a year",
-    "Work from home",
-    "Full-time"
-  ],
-  "extended_details": {
-    "posted_at": "2 days ago",
-    "salary": "85K–100K a year",
-    "work_from_home": true,
-    "schedule_type": "Full-time"
-  },
-  "description": "Software Developer (IC2) (Python)
-Fully Remote • Development
-Job Type
-Full-time
-
-Description
-Would you like to join a rapidly growing and successful company?...",
-  "urls": [
-    {
-      "title": "Edtech.com",
-      "link": "https://www.edtech.com/jobs/software-developer..."
-    },
-    {
-      "title": "SimplyHired",
-      "link": "https://www.simplyhired.co.in/job/hk2tlBGeH68f..."
-    },
-    {
-      "title": "Jobs4BW",
-      "link": "https://www.jobs4bw.com/job/rowville-consulting..."
-    }
-  ]
+    "title": "Data Analyst",
+    "company_name": "Amazon",
+    "location": "Seattle, WA",
+    "salary": "$85,000 - $120,000",
+    "description": "We are looking for a Data Analyst to join our team and drive decisions across supply chain operations...",
+    "job_type": "Full-time",
+    "source": "LinkedIn",
+    "apply_url": "https://www.linkedin.com/jobs/view/123456789",
+    "posted_date": "2 days ago"
 }
 ```
 
----
+## Input parameters
 
-## 🧠 Use Cases
+| Parameter | Required | Description |
+| --- | --- | --- |
+| `queries` | Yes | Job search queries (e.g., `["software engineer new york", "data scientist remote"]`). Each query runs a separate Google Jobs search. |
+| `maxResults` | No | Maximum number of jobs per query. Google Jobs shows ~10 initially and loads more on scroll. Default `5`. |
+| `country` | No | Two-letter country code for localized results (e.g., `us`, `uk`, `in`, `de`). Default `us`. |
+| `location` | No | Optional location to append to queries (e.g., `"San Francisco, CA"`). Leave blank to use location from the query text itself. |
+| `proxyConfiguration` | No | Apify proxy settings. Leave default for best results. |
 
-- **Job Seekers:** Get detailed, fresh listings across industries and locations.
-- **Recruiters:** Monitor job trends and employer demand.
-- **Researchers & Analysts:** Analyze the job market programmatically.
+## Use cases
 
----
+- **Job aggregators**: Pull listings from 20+ boards in one scrape instead of integrating each source separately.
+- **Market researchers**: Compare job volume across sources for a given role and region.
+- **HR analytics**: Track which boards dominate for specific roles in specific metros.
+- **Job seekers**: Get a single merged view across Indeed, LinkedIn, Glassdoor, and more.
 
-## 📝 Notes
+ 
 
-- Results are limited by Google Jobs' search interface and may vary based on availability and indexing.
-- To ensure high accuracy, avoid overly broad queries and large result limits in one run.
+## Use cases & recipes
 
----
+Step-by-step guides on [thirdwatch.dev/blog](https://thirdwatch.dev/blog):
 
-## ❓ Need Help?
+- [Build a Multi-Source Jobs Feed with Google Jobs (2026)](https://thirdwatch.dev/blog/build-multi-source-jobs-feed-with-google-jobs)
+- [Find Jobs with Direct Apply URLs (2026 Google Jobs Guide)](https://thirdwatch.dev/blog/find-jobs-with-direct-apply-urls)
+- [Scrape Google Jobs Aggregated Listings (2026 Guide)](https://thirdwatch.dev/blog/scrape-google-jobs-aggregated-listings)
+- [Track Job Posting Velocity on Google Jobs (2026)](https://thirdwatch.dev/blog/track-job-posting-velocity-on-google-jobs)
 
-If you run into any issues or have feature requests, feel free to open an issue in the Apify platform or contact the actor maintainer.
+ -end
+
+## Pricing
+
+Pay-per-result pricing. Tiered discounts apply automatically based on usage volume.
+
+| Tier | Price per result |
+| --- | --- |
+| FREE | $0.008 |
+| BRONZE | $0.006 |
+| SILVER | $0.005 |
+| GOLD | $0.004 |
+
+## Limitations
+
+- Coverage depends on Google's own aggregation — not every job on every board appears in Google Jobs.
+- Salary is not always present; it depends on whether the original source publishes it.
+- Very broad queries (e.g., a single word) may return fewer results than a targeted `role + location` query.
+- Results are localized by country code; runs using a different country code can return different listings for the same query.
+
+## Compared to alternatives
+
+- **vs. orgupdate/google-jobs** ($0.03 per result, ~800 users): This actor is roughly 3.75× cheaper at base price and supports the same aggregated output with direct apply URLs from each source.
+
+Pairs well with [Indeed Scraper](https://apify.com/thirdwatch/indeed-scraper), [LinkedIn Jobs Scraper](https://apify.com/thirdwatch/linkedin-jobs-scraper), and [Monster Scraper](https://apify.com/thirdwatch/monster-scraper) when you want full descriptions from the original boards after discovery via Google.
+
+## FAQ
+
+**Which job boards does Google Jobs include?**
+Indeed, LinkedIn, Glassdoor, ZipRecruiter, Monster, CareerBuilder, and many smaller specialist boards. Google decides the exact set per query.
+
+**Can I scrape jobs outside the US?**
+Yes. Set the `country` parameter (`uk`, `in`, `de`, `au`, etc.) and include a city in your query.
+
+**Do results include direct apply links?**
+Yes — the `apply_url` field points straight at the source board's apply page.
+
+**How fresh is the data?**
+Pulled live at run time.
+
+Last verified: 2026-04
+
+More scrapers at [thirdwatch.dev](https://thirdwatch.dev).
